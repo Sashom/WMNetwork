@@ -10,6 +10,8 @@
 		391D44BD1E4F10E50093D3FD /* WMNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 391D44B31E4F10E50093D3FD /* WMNetwork.framework */; };
 		391D44C21E4F10E50093D3FD /* WMNetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391D44C11E4F10E50093D3FD /* WMNetworkTests.swift */; };
 		391D44C41E4F10E50093D3FD /* WMNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = 391D44B61E4F10E50093D3FD /* WMNetwork.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		39A58B4E1E4F13E3009778C7 /* WMNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A58B4D1E4F13E3009778C7 /* WMNetwork.swift */; };
+		39A58B501E4F1469009778C7 /* AsyncOp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A58B4F1E4F1469009778C7 /* AsyncOp.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +31,8 @@
 		391D44BC1E4F10E50093D3FD /* WMNetworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WMNetworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		391D44C11E4F10E50093D3FD /* WMNetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMNetworkTests.swift; sourceTree = "<group>"; };
 		391D44C31E4F10E50093D3FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		39A58B4D1E4F13E3009778C7 /* WMNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMNetwork.swift; sourceTree = "<group>"; };
+		39A58B4F1E4F1469009778C7 /* AsyncOp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncOp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +77,8 @@
 			children = (
 				391D44B61E4F10E50093D3FD /* WMNetwork.h */,
 				391D44B71E4F10E50093D3FD /* Info.plist */,
+				39A58B4D1E4F13E3009778C7 /* WMNetwork.swift */,
+				39A58B4F1E4F1469009778C7 /* AsyncOp.swift */,
 			);
 			path = WMNetwork;
 			sourceTree = "<group>";
@@ -149,6 +155,7 @@
 					391D44B21E4F10E50093D3FD = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = QC34DQH58R;
+						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 					};
 					391D44BB1E4F10E50093D3FD = {
@@ -198,6 +205,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39A58B4E1E4F13E3009778C7 /* WMNetwork.swift in Sources */,
+				39A58B501E4F1469009778C7 /* AsyncOp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,6 +331,7 @@
 		391D44C81E4F10E50093D3FD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = QC34DQH58R;
@@ -334,6 +344,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = WM.WMNetwork;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -341,6 +352,7 @@
 		391D44C91E4F10E50093D3FD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = QC34DQH58R;
@@ -360,6 +372,7 @@
 		391D44CB1E4F10E50093D3FD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = QC34DQH58R;
 				INFOPLIST_FILE = WMNetworkTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -372,6 +385,7 @@
 		391D44CC1E4F10E50093D3FD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = QC34DQH58R;
 				INFOPLIST_FILE = WMNetworkTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -400,6 +414,7 @@
 				391D44C91E4F10E50093D3FD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		391D44CA1E4F10E50093D3FD /* Build configuration list for PBXNativeTarget "WMNetworkTests" */ = {
 			isa = XCConfigurationList;
@@ -408,6 +423,7 @@
 				391D44CC1E4F10E50093D3FD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

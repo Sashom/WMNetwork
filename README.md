@@ -3,7 +3,7 @@ Lighweight, UltraSimple JSON REST Networking Framework for iOS in Swift 3
 
 **WARNING:** This is still experimental alpha version.
 
-Motivation:##
+## Motivation:
 
 **GET**
 WMNet.get("http://wmnet.vikors.com/stuff.php") { (data, error) in

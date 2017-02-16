@@ -8,6 +8,15 @@
 
 import Foundation
 
+extension NSLock {
+	func withCriticalScope<T>( block: (Void) -> T) -> T {
+		lock()
+		let value = block()
+		unlock()
+		return value
+	}
+}
+
 public class AsyncOperation : Operation {
 	override public var isAsynchronous: Bool { return true }
 	private let stateLock = NSLock()
@@ -60,14 +69,5 @@ public class AsyncOperation : Operation {
 
 	override public func main() {
 		fatalError("subclasses must override `main`")
-	}
-}
-
-extension NSLock {
-	func withCriticalScope<T>( block: (Void) -> T) -> T {
-		lock()
-		let value = block()
-		unlock()
-		return value
 	}
 }

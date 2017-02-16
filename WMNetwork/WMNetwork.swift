@@ -27,6 +27,7 @@ extension NSMutableData {
 	}
 }
 
+// to check for networkactivityindicator
 extension OperationQueue {
 	var allDone: Bool {
 		for op in self.operations {

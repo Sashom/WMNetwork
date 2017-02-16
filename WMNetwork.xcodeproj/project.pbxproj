@@ -11,6 +11,7 @@
 		391D44C21E4F10E50093D3FD /* WMNetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391D44C11E4F10E50093D3FD /* WMNetworkTests.swift */; };
 		391D44C41E4F10E50093D3FD /* WMNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = 391D44B61E4F10E50093D3FD /* WMNetwork.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		397B6AF01E55789E005A43C8 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397B6AEF1E55789E005A43C8 /* Config.swift */; };
+		3988B62F1E55BB3200CA5271 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 3988B62E1E55BB3200CA5271 /* README.md */; };
 		39A58B4E1E4F13E3009778C7 /* WMNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A58B4D1E4F13E3009778C7 /* WMNetwork.swift */; };
 		39A58B501E4F1469009778C7 /* AsyncOp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A58B4F1E4F1469009778C7 /* AsyncOp.swift */; };
 /* End PBXBuildFile section */
@@ -33,6 +34,7 @@
 		391D44C11E4F10E50093D3FD /* WMNetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMNetworkTests.swift; sourceTree = "<group>"; };
 		391D44C31E4F10E50093D3FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		397B6AEF1E55789E005A43C8 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		3988B62E1E55BB3200CA5271 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		39A58B4D1E4F13E3009778C7 /* WMNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMNetwork.swift; sourceTree = "<group>"; };
 		39A58B4F1E4F1469009778C7 /* AsyncOp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncOp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -77,6 +79,7 @@
 		391D44B51E4F10E50093D3FD /* WMNetwork */ = {
 			isa = PBXGroup;
 			children = (
+				3988B62E1E55BB3200CA5271 /* README.md */,
 				391D44B61E4F10E50093D3FD /* WMNetwork.h */,
 				391D44B71E4F10E50093D3FD /* Info.plist */,
 				39A58B4D1E4F13E3009778C7 /* WMNetwork.swift */,
@@ -210,6 +213,7 @@
 			files = (
 				39A58B4E1E4F13E3009778C7 /* WMNetwork.swift in Sources */,
 				397B6AF01E55789E005A43C8 /* Config.swift in Sources */,
+				3988B62F1E55BB3200CA5271 /* README.md in Sources */,
 				39A58B501E4F1469009778C7 /* AsyncOp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

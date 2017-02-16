@@ -18,7 +18,7 @@ Lighweight, UltraSimple JSON REST Networking Framework for iOS in Swift 3
         }
 
         // data is Dictionary[String: Any], aka ResponseDictionary
-        if let id = data["Result"]?["id"] as? Int {
+        if let id = (data["Result"] as? ResponseDictionary)?["id"] as? Int {
             // we have some id
             DispatchQueue.main.async {
                 > update ui with success

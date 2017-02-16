@@ -9,17 +9,17 @@ Lighweight, UltraSimple JSON REST Networking Framework for iOS in Swift 3
 > WMNet.get("http://wmnet.vikors.com/stuff.php") { (data, error) in
 	guard error == nil else {
 		DispatchQueue.main.async {
-			// update ui with error
+			 > update ui with error
 		}
         
 		return
 	}
 
-	// data is Dictionary<String, Any, aka ResponseDictionary
+	// data is Dictionary[String: Any], aka ResponseDictionary
 	if let id = data["Result"]?["id"] as? Int {
 		// we have some id
 		DispatchQueue.main.async {
-			// update ui with success
+			> update ui with success
 		}
 	}
 }
@@ -41,7 +41,7 @@ WMNet.post("http://wmnet.vikors.com/stuff.php", params: postVars) { (data, error
         return
     }
 
-    // data is Dictionary<String, Any, aka ResponseDictionary
+    // data is Dictionary<String, Any>, aka ResponseDictionary
     if let id = data["Result"]?["id"] as? Int {
         // we have some id
         DispatchQueue.main.async {

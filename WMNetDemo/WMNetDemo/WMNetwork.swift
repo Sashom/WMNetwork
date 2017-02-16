@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 
-// to add headers and tokens together
 func + <K,V> (left: Dictionary<K,V>, right: Dictionary<K,V>?) -> Dictionary<K,V> {
 	guard let right = right else { return left }
 	return left.reduce(right) {
@@ -19,8 +18,8 @@ func + <K,V> (left: Dictionary<K,V>, right: Dictionary<K,V>?) -> Dictionary<K,V>
 	}
 }
 
-// to build post body
 extension NSMutableData {
+
 	func appendString(string: String) {
 		let data = string.data(using: .utf8, allowLossyConversion: true)
 		append(data!)
@@ -28,7 +27,7 @@ extension NSMutableData {
 }
 
 
-// public interface - working with WMRequest class
+// public interface - working with WMRequest
 class WMNet {
 	static let shared = WMNet()
 
@@ -48,22 +47,22 @@ class WMNet {
 	var defaultHeaders: [String: String] = {
 		var x: [String: String] = [
 			"Accept": "application/json",
-			"User-Agent": "WMNetwork Framework v. 0.5",
+			"User-Agent": "WMNetwork Framework v. 1",
 			]
 
 		return x
 	}()
 
 	lazy var HTTP: URLSession = { () -> URLSession in
+		NSLog("Requesting HTTP URLSession")
 		let config = URLSessionConfiguration.default
 		config.httpAdditionalHeaders 			= self.defaultHeaders
 		config.timeoutIntervalForRequest 		= 40
-
 		return URLSession(configuration: config)
 	}()
 
-	class public func post(_ urlString: String, params: ResponseDictionary? = nil, closure: NetCompHandler? = nil) -> WMRequest? {
-		return req(urlString: urlString, method: .post, params: params, closure: closure)
+	class public func post(_ urlString: String, closure: NetCompHandler? = nil) -> WMRequest? {
+		return req(urlString: urlString, method: .post, params: nil, closure: closure)
 	}
 
 	class public func get(_ urlString: String, closure: NetCompHandler? = nil) -> WMRequest? {
@@ -72,7 +71,7 @@ class WMNet {
 
 	class public func req(urlString: String, method: WMRequestMethod, params: ResponseDictionary? = nil, closure: NetCompHandler? = nil) -> WMRequest? {
 		let wmReq = WMRequest(URLString: urlString, methodParams: params, REQMethod: method, additionalHeaders: nil, netOpCompletionHandler: closure)
-		wmReq.skipTokens = true /**** !!! for test only : tokens handling to come !!! ***/
+		wmReq.skipTokens = true /**** !!! for test only !!! ***/
 
 		if WMRequest.addRequest(vsgReq: wmReq) {
 			return wmReq
@@ -92,7 +91,7 @@ class WMNet {
 	}()
 }
 
-class WMRequest: AsyncOperation { //, URLSessionTaskDelegate, URLSessionDelegate - TODO, challenges?
+class WMRequest: AsyncOperation, URLSessionDelegate {
 	var request:			URLRequest? = nil
 	var URLString:        	String   // possible to contain variables like %s %u
 	var REQMethod:          WMRequestMethod 		= .get
@@ -110,7 +109,6 @@ class WMRequest: AsyncOperation { //, URLSessionTaskDelegate, URLSessionDelegate
 		self.networkOperationCompletionHandler = netOpCompletionHandler
 		self.URLString = URLString
 		self.REQMethod = REQMethod
-		self.MethodParams = methodParams
 	}
 
 	convenience init(oldR: WMRequest) {
@@ -131,12 +129,14 @@ class WMRequest: AsyncOperation { //, URLSessionTaskDelegate, URLSessionDelegate
 
 		let vTokens: TokensData? = nil
 		guard skipTokens || vTokens != nil else {
-			// here use dependencies? // .addDependency // login to get tokens?
-			/*logOut()
-			_ = logIn(withSuccessCHandler: {
-			let vsgR = WMRequest(oldR: self) // here `self` isFinished!, so recreate it below to execute it again , now with the correct tokens.
-			_ = WMRequest.addRequest(vsgReq: vsgR)
-			})*/
+			DispatchQueue.main.async {
+				// here use dependencies? // .addDependency // login to get tokens?
+				/*logOut()
+				_ = logIn(withSuccessCHandler: {
+					let vsgR = WMRequest(oldR: self) // here `self` isFinished!, so recreate it below to execute it again , now with the correct tokens.
+					_ = WMRequest.addRequest(vsgReq: vsgR)
+				})*/
+			}
 
 			return
 		}
@@ -175,7 +175,8 @@ class WMRequest: AsyncOperation { //, URLSessionTaskDelegate, URLSessionDelegate
 
 		request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
 
-		request.httpBody = WMRequest.createBodyWithParameters(boundary: boundary, parameters: MethodParams) as Data
+		request.httpBody = createBodyWithParameters(boundary: boundary, parameters: MethodParams) as Data
+
 
 		let task = del.HTTP.dataTask(with: request as URLRequest) { (data, response, error) in
 			var responseResult: ResponseDictionary? = nil
@@ -183,66 +184,92 @@ class WMRequest: AsyncOperation { //, URLSessionTaskDelegate, URLSessionDelegate
 
 			defer {
 				if let netOpCH = self.networkOperationCompletionHandler {
-					netOpCH(responseResult, err as NSError?)
+					netOpCH(responseResult, err as NSError?, self)
 				}
 
 				self.completeOperation()
 			}
 
-			func setError(withText text: String, andCode code: Int) {
-				if error == nil {
-					err = NSError(domain: text, code: code, userInfo: ["description": text])
-				}
-				else {
-					err = error
-				}
-
-				NSLog(text)
-			}
-
-			guard let response = response as? HTTPURLResponse else {
-				setError(withText: "No response.", andCode: 98765)
-
-				return
-			}
-
-			guard response.statusCode < 400 else {
-				switch response.statusCode {
-				case 401: // 401 Unauthorized : possibly needs credentials. How about / refresh / reload / relogin / get tokens n stuff could be automatically handled from here
-					break
-
-				default:
-					break
-				}
-
-				setError(withText: "API Call DAtaTask response Status Code not so good.", andCode: response.statusCode)
-
-				return
-			}
-
 			guard let theData = data as Data?
-				, error == nil else {
+				, let _:URLResponse = response, error == nil else {
 					// cannot parse the result data
-					setError(withText: "API Call DAtaTask response DATA.", andCode: 949497)
+					err = NSError(domain: "API Call DAtaTask response DATA", code: 949497, userInfo: ["description": "Cannot get data from response."])
+					NSLog("Cannot get data from API Call response.")
 
 					return
 			}
 
-			guard let rr = try? JSONSerialization.jsonObject(with: theData) as! ResponseDictionary else {
-				setError(withText: "API Call DAtaTask response JSON.", andCode: 949498)
+			var rr: ResponseDictionary? = try? JSONSerialization.jsonObject(with: theData) as! ResponseDictionary
+			if rr == nil {
+				if let str = String(data: theData, encoding: .utf8)
+				 , let tt = Int(str) {
+					rr = ["Result": ["id": tt]]
+				}
+			}
+
+			if rr == nil {
+				// cannot parse the result
+				err = NSError(domain: "API Call DAtaTask response JSON", code: 949498, userInfo: ["description": "Cannot parse the API Call DAtaTask result to JSON."])
+				NSLog("cannot parse the API Call DAtaTask result to JSON")
 
 				return
 			}
 
-			responseResult = rr
+			responseResult = rr!
 			err = error
 
 			// defer is going to finish the job
 		}
 
 		task.resume()
-
 		return request as URLRequest
+
+		/*return sessionManager.request(URLString + qs, method: REQMethod, parameters: MethodParams, encoding: paramsEncoding, headers: headers)
+		.validate()
+		.responseJSON { response in
+		if let jswok = self.JSONWrapperObj
+		,  let wo = self.MethodParams?[jswok] as? MethodParamType {
+		self.MethodParams = wo
+		}
+
+		// should check INVALID_SESSION and try to reload...
+		if let rr = response.result.value as? ResponseDictionary
+		, let e = rr["Exception"] as? ResponseDictionary
+		, let eCode = e["Code"] as? String {
+		switch eCode {
+		case ExceptionCodes.SessionExpiredCodeKey:
+		DispatchQueue.main.async {
+		logOut()
+		_ = logIn(withSuccessCHandler: {
+		let vsgR = WMRequest(oldR: self) // here `self` isFinished!, so recreate it below to execute it again , now with the correct tokens.
+		_ = WMRequest.addRequest(vsgReq: vsgR)
+		})
+		return
+		}
+
+		default:
+		break
+
+		} // end switch
+		/*
+		self.completeOperation()
+		return
+		*/
+		}
+		else {
+		// if network error
+		}
+
+		if let netOpCH = self.networkOperationCompletionHandler {
+		netOpCH(response.result.value, response.result.error as NSError?, nil)
+		}
+
+		self.completeOperation()
+		}*/
+	}
+
+	deinit {
+		//DLog("how: " + URLString + "finished = \(isFinished); cancelled = \(isCancelled)")
 	}
 
 	override func cancel() {
@@ -251,19 +278,9 @@ class WMRequest: AsyncOperation { //, URLSessionTaskDelegate, URLSessionDelegate
 				return
 		}
 
+		//request?.cancel()
 		super.cancel()
 		super.completeOperation() // set isfinished and isexecuting
-	}
-
-	override func completeOperation() {
-		super.completeOperation()
-
-		let del = delegate ?? WMNet.shared
-		if del.networkOpQueue.allDone {
-			DispatchQueue.main.async {
-				UIApplication.shared.isNetworkActivityIndicatorVisible = false
-			}
-		}
 	}
 
 	class func addRequest(vsgReq: WMRequest, netOp: OperationQueue) -> Bool {
@@ -298,33 +315,33 @@ class WMRequest: AsyncOperation { //, URLSessionTaskDelegate, URLSessionDelegate
 		return true
 	}
 
-	static func createBodyWithParameters(boundary: String, parameters: MethodParamType? = nil, filePathKey: String? = nil, imageDataKey: NSData? = nil) -> Data {
-		let body = NSMutableData();
+}
 
-		if parameters != nil {
-			for (key, value) in parameters! {
-				body.appendString(string: "--\(boundary)\r\n")
-				body.appendString(string: "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
-				body.appendString(string: "\(value)\r\n")
-			}
-		}
+func createBodyWithParameters(boundary: String, parameters: MethodParamType? = nil, filePathKey: String? = nil, imageDataKey: NSData? = nil) -> Data {
+	let body = NSMutableData();
 
-		if let idk = imageDataKey as? Data {
-			let filename = "product_photo.jpg"
-			let mimetype = "image/jpg"
-
+	if parameters != nil {
+		for (key, value) in parameters! {
 			body.appendString(string: "--\(boundary)\r\n")
-			let fpk = filePathKey ?? "file"
-			body.appendString(string: "Content-Disposition: form-data; name=\"\(fpk)\"; filename=\"\(filename)\"\r\n")
-			body.appendString(string: "Content-Type: \(mimetype)\r\n\r\n")
-			body.append(idk)
-			body.appendString(string: "\r\n")
-			body.appendString(string: "--\(boundary)--\r\n")
+			body.appendString(string: "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+			body.appendString(string: "\(value)\r\n")
 		}
-
-		return body as Data
 	}
 
+	if let idk = imageDataKey as? Data {
+		let filename = "product_photo.jpg"
+		let mimetype = "image/jpg"
+
+		body.appendString(string: "--\(boundary)\r\n")
+		let fpk = filePathKey ?? "file"
+		body.appendString(string: "Content-Disposition: form-data; name=\"\(fpk)\"; filename=\"\(filename)\"\r\n")
+		body.appendString(string: "Content-Type: \(mimetype)\r\n\r\n")
+		body.append(idk)
+		body.appendString(string: "\r\n")
+		body.appendString(string: "--\(boundary)--\r\n")
+	}
+
+	return body as Data
 }
 
 public enum WMRequestMethod: String {
@@ -343,5 +360,5 @@ typealias ResponseDictionary = [String: Any]
 typealias ResponseArray = [ResponseDictionary]
 typealias MethodParamType = ResponseDictionary
 typealias URLParamType = [String: String]?
-typealias NetCompHandler = (_ responseObject: Any?, _ error: NSError?) -> ()
+typealias NetCompHandler = (_ responseObject: Any?, _ error: NSError?, _ wmR: WMRequest?) -> ()
 typealias TokensData = Dictionary<String, String>

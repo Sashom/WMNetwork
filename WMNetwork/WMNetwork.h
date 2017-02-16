@@ -3,7 +3,7 @@
 //  WMNetwork
 //
 //  Created by Sasho on 11.02.17 г..
-//  Copyright © 2017 г. WebMaster Ltd. All rights reserved.
+//  Copyright © 2017 г. . All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

@@ -1,15 +1,15 @@
 //
-//  WMNetworkTests.swift
-//  WMNetworkTests
+//  WMNetDemoTests.swift
+//  WMNetDemoTests
 //
-//  Created by Sasho on 11.02.17 г..
-//  Copyright © 2017 г. . All rights reserved.
+//  Created by Sasho on 16.02.17 г..
+//
 //
 
 import XCTest
-@testable import WMNetwork
+@testable import WMNetDemo
 
-class WMNetworkTests: XCTestCase {
+class WMNetDemoTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

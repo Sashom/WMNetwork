@@ -71,26 +71,3 @@ extension NSLock {
 		return value
 	}
 }
-
-extension OperationQueue {
-	var allDone: Bool {
-		for op in self.operations {
-			if op.isFinished == false {
-				return false
-			}
-		}
-
-		return true
-	}
-
-	var allSleeping: Bool {
-		for op in self.operations {
-			if op.isExecuting {
-				return false
-			}
-		}
-
-		return true
-	}
-	
-}

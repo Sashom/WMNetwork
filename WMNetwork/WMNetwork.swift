@@ -27,6 +27,28 @@ extension NSMutableData {
 	}
 }
 
+extension OperationQueue {
+	var allDone: Bool {
+		for op in self.operations {
+			if op.isFinished == false {
+				return false
+			}
+		}
+
+		return true
+	}
+
+	var allSleeping: Bool {
+		for op in self.operations {
+			if op.isExecuting {
+				return false
+			}
+		}
+
+		return true
+	}
+}
+
 
 // public interface - working with WMRequest class
 class WMNet {
@@ -124,7 +146,7 @@ class WMRequest: AsyncOperation { //, URLSessionTaskDelegate, URLSessionDelegate
 		retryCount += 1
 
 		guard retryCount < 3 else {
-			NSLog("Too many tries in main() = %d.\nCall Sasho!", retryCount)
+			//NSLog("Too many tries in main() = %d.\nCall Sasho!", retryCount)
 
 			return
 		}
@@ -144,7 +166,7 @@ class WMRequest: AsyncOperation { //, URLSessionTaskDelegate, URLSessionDelegate
 		let del = delegate ?? WMNet.shared
 		let headers: TokensData = del.defaultHeaders + ( skipTokens ? nil : vTokens )
 		var queryString: String = "" // ? + stuff
-		// this below might get deprecated and in most cases URL params are String(format:)'ed into the url
+		// this below might get deprecated as in often URL params are String(format:)'ed into the url
 		if let urlParams = self.URLParams as URLParamType, urlParams.count > 0 {
 			queryString = "?"
 			for param in urlParams.keys {
@@ -196,8 +218,6 @@ class WMRequest: AsyncOperation { //, URLSessionTaskDelegate, URLSessionDelegate
 				else {
 					err = error
 				}
-
-				NSLog(text)
 			}
 
 			guard let response = response as? HTTPURLResponse else {
@@ -276,7 +296,7 @@ class WMRequest: AsyncOperation { //, URLSessionTaskDelegate, URLSessionDelegate
 
 	class func addReq(vsgReq: WMRequest, enforce: Bool = false, netOp: OperationQueue) -> Bool {
 		guard vsgReq.isFinished == false else {
-			NSLog("MOTHER OF GOD!! IS HAS FINISHED ... Maybe trying to add same thing twice?! \(vsgReq.URLString)")
+			//NSLog("MOTHER OF GOD!! IS HAS FINISHED ... Maybe trying to add same thing twice?! \(vsgReq.URLString)")
 
 			return false
 		}

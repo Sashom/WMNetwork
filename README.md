@@ -6,12 +6,13 @@ Lighweight, UltraSimple JSON REST Networking Framework for iOS in Swift 3
 ## Motivation:
 
 **GET**
-> WMNet.get("http://wmnet.vikors.com/stuff.php") { (data, error) in
+
+`WMNet.get("http://wmnet.vikors.com/stuff.php") { (data, error) in
 	guard error == nil else {
 		DispatchQueue.main.async {
 			 > update ui with error
 		}
-        
+ 
 		return
 	}
 
@@ -22,11 +23,11 @@ Lighweight, UltraSimple JSON REST Networking Framework for iOS in Swift 3
 			> update ui with success
 		}
 	}
-}
+}`
 
 
-> **POST**
-let postVars: ResponseDictionary = [
+**POST**
+`let postVars: ResponseDictionary = [
 	"album_id": 1999,
     "text": "And when the rain begins to flow",
     "chorus": "I'll be the sunshine in your eyes",
@@ -37,7 +38,7 @@ WMNet.post("http://wmnet.vikors.com/stuff.php", params: postVars) { (data, error
         DispatchQueue.main.async {
             // update ui with error
         }
-        
+
         return
     }
 
@@ -48,7 +49,7 @@ WMNet.post("http://wmnet.vikors.com/stuff.php", params: postVars) { (data, error
             // update ui with success
         }
     }
-}
+}`
 
 
 This is the end, my only friend.

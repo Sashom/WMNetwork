@@ -61,7 +61,7 @@ You just configure the login credentials and how the returned tokens match the h
     
 
 ***Configuration***
-Just set the loginCredentials variable
+Just set the loginCredentials variable when app starts or from the global space
 
 			WMNet.shared.loginCredentials = {
 			let lc = WMNet.LoginCredentials(
@@ -81,10 +81,14 @@ Just set the loginCredentials variable
 		}
 
 		WMNet.shared.autoLogin = true
-
+		// now you go for your requests, e.g.
 		_ = WMNet.get("http://wmnet.vikors.com/stuff.php?what=securedcontent") { (response, error) in
 			NSLog("GET Response: \(response)")
 		}
 
+A bit more explanation about loginHeadersMatch part of the loginCredentials above:
+In the example above after successful login server returns 2 variables `token1`, and `token2`.
+In turn to authenticate with the server you need to include these tokens somehow as headers, which names are different from `token1` and `token2`, but essentially contain the same data.
+So the headers matching `token1` and `token2` are named respectively `primary_token` and `secondary_token`.
 
 This is the end, my only friend.

@@ -266,7 +266,6 @@ class WMRequest: AsyncOperation { //, URLSessionTaskDelegate, URLSessionDelegate
 
 		guard retryCount < 3 else {
 			//NSLog("Too many tries in main() = %d.\nCall Sasho!", retryCount)
-
 			return
 		}
 

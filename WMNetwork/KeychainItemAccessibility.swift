@@ -4,7 +4,7 @@
 //
 //  Created by James Blair on 4/24/16.
 //  Copyright © 2016 Jason Rendel. All rights reserved.
-//
+// .
 //    The MIT License (MIT)
 //
 //    Permission is hereby granted, free of charge, to any person obtaining a copy

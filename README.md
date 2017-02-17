@@ -14,7 +14,8 @@ You just configure the login credentials and how the returned tokens match the h
 
 	#import WMNetwork
 	WMNet.get("http://wmnet.vikors.com/stuff.php") { (data, error) in
-        guard error == nil else {
+        guard error == nil
+        	, let data = data as? ResponseDictionary else {
             DispatchQueue.main.async {
                  > update ui with error
             }
@@ -42,7 +43,8 @@ You just configure the login credentials and how the returned tokens match the h
   	]
     
   	WMNet.post("http://wmnet.vikors.com/stuff.php", params: postVars) { (data, error) in
-        guard error == nil else {
+        guard error == nil
+        	, let data = data as? ResponseDictionary else {
             DispatchQueue.main.async {
                 // update ui with error
             }

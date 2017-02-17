@@ -1,6 +1,11 @@
 # WMNetwork
 Lighweight, UltraSimple JSON REST Networking Framework for iOS in Swift 3
 
+If you have been using a lot of JSON REST Webservices where you need to "login" to get a token, this makes things a bit easier for you.
+
+Automatically logs you in (reads HTTP status code 401 only to perform login so far).
+You just configure the login credentials and how the returned tokens match the headers to be included in for authentication.
+
 **WARNING:** This is still experimental alpha version.
 
 ## Motivation:

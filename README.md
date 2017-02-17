@@ -82,8 +82,8 @@ Just set the loginCredentials variable when app starts or from the global space
 
 		WMNet.shared.autoLogin = true
 		// now you go for your requests, e.g. in `viewDidLoad()`
-		_ = WMNet.get("http://wmnet.vikors.com/stuff.php?what=securedcontent") { (response, error) in
-			NSLog("GET Response: \(response)")
+		_ = WMNet.get("http://wmnet.vikors.com/stuff.php?what=securedcontent") { (data, error) in
+			NSLog("GET Response: \(data)")
 		}
 
 A bit more explanation about loginHeadersMatch part of the loginCredentials above:

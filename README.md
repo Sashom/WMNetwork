@@ -58,6 +58,32 @@ You just configure the login credentials and how the returned tokens match the h
             }
         }
   	}
+    
+
+***Configuration***
+Just set the loginCredentials variable
+			WMNet.shared.loginCredentials = {
+			let lc = WMNet.LoginCredentials(
+				loginURLString: "http://wmnet.vikors.com/stuff.php?what=login"
+				, keyValues: ResponseDictionary(dictionaryLiteral:
+					("myLoginUser", "dedo")	// or NSNull() to avoid login
+					, ("myLoginPass", "pene"))
+				, loginHeadersMatch: ResponseDictionary(dictionaryLiteral:
+					// (key for value from server, key for value for header)
+						("token1", "primary_token")
+					// (key for value from server, key for value for header)
+					  , ("token2", "secondary_token")
+				)
+			)
+
+			return lc
+		}
+
+		WMNet.shared.autoLogin = true
+
+		_ = WMNet.get("http://wmnet.vikors.com/stuff.php?what=securedcontent") { (response, error) in
+			NSLog("GET Response: \(response)")
+		}
 
 
 This is the end, my only friend.

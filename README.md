@@ -93,4 +93,8 @@ In the example above after successful login server returns 2 variables `token1`,
 In turn to authenticate with the server you need to include these tokens somehow as headers, which names are different from `token1` and `token2`, but essentially contain the same data.
 So the headers matching `token1` and `token2` are named respectively `primary_token` and `secondary_token`.
 
+This project uses a modified version of:
+https://github.com/jrendel/SwiftKeychainWrapper
+which files are directly included in WMNetwork.
+
 This is the end, my only friend.

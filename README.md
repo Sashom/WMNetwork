@@ -1,18 +1,18 @@
 # WMNetwork
 Lighweight, UltraSimple JSON REST Networking Framework for iOS in Swift 3
 
+**WARNING:** This is still experimental alpha version. Lacks functionality/flexibility and has potential (design) flaws.
+
 If you have been using a lot of JSON REST webservices where you need to login to get a token and follow if it has expired, this makes things a bit easier for you.
 
 Automatically logs you in (reads HTTP status code 401 only to perform login so far).
 You just configure the login credentials and how the returned tokens match the headers to be included in for authentication (example further down).
 
-**WARNING:** This is still experimental alpha version.
-
 ## Motivation:
 
-	#import WMNetwork
 **GET**
 
+	#import WMNetwork
 	WMNet.get("http://wmnet.vikors.com/stuff.php") { (data, error) in
         guard error == nil else {
             DispatchQueue.main.async {

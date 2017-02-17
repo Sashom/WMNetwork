@@ -32,6 +32,7 @@ extension String {
 		return self.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
 	}
 
+	// used to generate key for storing the tokens
 	func fromBase64() -> Data
 	{
 		let data = Data(base64Encoded: self)

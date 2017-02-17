@@ -5,7 +5,7 @@ Lighweight, UltraSimple JSON REST Networking Framework for iOS in Swift 3
 
 If you have been using a lot of JSON REST webservices where you need to login to get a token and follow if it has expired, this makes things a bit easier for you.
 
-Automatically logs you in (reads HTTP status code 401 only to perform login so far).
+Automatically logs you in (so far reads only HTTP status code 401 to perform login).
 You just configure the login credentials and how the returned tokens match the headers to be included in for authentication (example further down).
 
 ## Motivation:

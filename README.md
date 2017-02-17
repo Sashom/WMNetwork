@@ -62,6 +62,7 @@ You just configure the login credentials and how the returned tokens match the h
 
 ***Configuration***
 Just set the loginCredentials variable
+
 			WMNet.shared.loginCredentials = {
 			let lc = WMNet.LoginCredentials(
 				loginURLString: "http://wmnet.vikors.com/stuff.php?what=login"

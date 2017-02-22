@@ -143,16 +143,24 @@ class WMNet {
 		return "WMNetwork.tokens.storage."+lc.toBase64()
 	}
 
+	class public func get(_ urlString: String, closure: NetCompHandler? = nil) -> WMRequest? {
+		return shared.get(urlString, closure: closure)
+	}
+
 	class public func post(_ urlString: String, params: ResponseDictionary? = nil, closure: NetCompHandler? = nil) -> WMRequest? {
+		return shared.post(urlString, params: params, closure: closure)
+	}
+
+	public func post(_ urlString: String, params: ResponseDictionary? = nil, closure: NetCompHandler? = nil) -> WMRequest? {
 		return req(urlString: urlString, method: .post, params: params, closure: closure)
 	}
 
-	class public func get(_ urlString: String, closure: NetCompHandler? = nil) -> WMRequest? {
+	public func get(_ urlString: String, closure: NetCompHandler? = nil) -> WMRequest? {
 		return req(urlString: urlString, method: .get, params: nil, closure: closure)
 	}
 
 	// this is public to allow user to use arbitrary requests (OPTIONS, HEAD, PUT, ...)
-	class public func req(urlString: String, method: WMRequestMethod, params: ResponseDictionary? = nil, closure: NetCompHandler? = nil) -> WMRequest? {
+	public func req(urlString: String, method: WMRequestMethod, params: ResponseDictionary? = nil, closure: NetCompHandler? = nil) -> WMRequest? {
 		let wmReq = WMRequest(URLString: urlString, methodParams: params, REQMethod: method, additionalHeaders: nil, netOpCompletionHandler: closure)
 
 		if WMRequest.addRequest(vsgReq: wmReq) {

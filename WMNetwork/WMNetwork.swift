@@ -207,7 +207,7 @@ class WMNet {
 				NSLog("Invalid login credentials/ matching keyes")
 				return
 			}
-
+V
 			// saveTokens here
 			_ = KeychainWrapper.sharedKeychainWrapper.setObject(value: tTokenS as NSCoding, forKey: self.tokenStorageKey)
 
@@ -217,7 +217,7 @@ class WMNet {
 			}
 		}
 
-		wmReq.skipTokens = true /**** !!! for test only : tokens handling to come !!! ***/
+		wmReq.skipTokens = true
 
 		if WMRequest.addRequest(vsgReq: wmReq) {
 			return true

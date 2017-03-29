@@ -33,14 +33,12 @@ extension String {
 	}
 
 	// used to generate key for storing the tokens
-	func fromBase64() -> Data
-	{
+	func fromBase64() -> Data {
 		let data = Data(base64Encoded: self)
 		return data!
 	}
 
-	func toBase64() -> String
-	{
+	func toBase64() -> String {
 		let data = self.data(using: .utf8, allowLossyConversion: false)
 		return data!.base64EncodedString()
 	}
@@ -52,6 +50,7 @@ extension String {
 			return trimmed.isEmpty
 		}
 	}
+
 }
 
 
@@ -102,10 +101,11 @@ class WMNet {
 
 	// tokens Dictionary<String, String>
 	var tokens: TokensData? {
-		let tkns = KeychainWrapper.sharedKeychainWrapper.objectForKey(keyName: tokenStorageKey) as? TokensData
-		if tkns != nil {
-			NSLog("got old tokens: \(tkns)")
+		guard let tkns = KeychainWrapper.sharedKeychainWrapper.objectForKey(keyName: tokenStorageKey) as? TokensData else {
+			return nil
 		}
+
+		NSLog("got old tokens: \(tkns)")
 
 		return tkns
 	}
@@ -207,7 +207,7 @@ class WMNet {
 				NSLog("Invalid login credentials/ matching keyes")
 				return
 			}
-V
+
 			// saveTokens here
 			_ = KeychainWrapper.sharedKeychainWrapper.setObject(value: tTokenS as NSCoding, forKey: self.tokenStorageKey)
 
@@ -281,10 +281,7 @@ class WMRequest: AsyncOperation { //, URLSessionTaskDelegate, URLSessionDelegate
 		let del = delegate ?? WMNet.shared
 		let vTokens: TokensData? = del.tokens // load tokens here
 		guard (skipTokens || vTokens != nil || del.autoLogin == false) else {
-			_ = del.performLogin() { // chaining self to login (TODO: try dependency on Operation)
-				let vsgR = WMRequest(oldR: self) // here `self` isFinished!, so recreate it below to execute it again , now with the correct tokens.
-				_ = WMRequest.addRequest(vsgReq: vsgR)
-			}
+			self.doLogin()
 
 			return
 		}
@@ -358,6 +355,9 @@ class WMRequest: AsyncOperation { //, URLSessionTaskDelegate, URLSessionDelegate
 					if let authScheme = response.allHeaderFields["WWW-Authenticate"] as? String {
 						// see how to react : go login/ refresh / get tokens
 						NSLog("AuthScheme: %@", authScheme)
+						if del.autoLogin {
+							self.doLogin()
+						}
 					}
 
 					break
@@ -394,6 +394,18 @@ class WMRequest: AsyncOperation { //, URLSessionTaskDelegate, URLSessionDelegate
 		task.resume()
 
 		return request as URLRequest
+	}
+
+	func doLogin() {
+		guard let del = delegate else {
+			return
+		}
+
+		_ = del.performLogin() { // chaining self to login (TODO: try dependency on Operation)
+			let vsgR = WMRequest(oldR: self) // here `self` isFinished!, so recreate it below to execute it again , now with the correct tokens.
+			_ = WMRequest.addRequest(vsgReq: vsgR)
+
+		}
 	}
 
 	override func cancel() {
